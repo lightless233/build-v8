@@ -42,7 +42,29 @@ jobs:
         run: |
           find ./ -iname "v8.h"
           find ./ -iname "*v8_monolith*"
-      
-      -name: step7, build zip
+
+      - name: step7, build zip
         run: |
           zip -9 -r -j release.zip ./v8/include/ ./v8/out.gn/x64.release.sample/obj/libv8_monolith.a ./v8/out.gn/x64.release.sample/icudtl.dat
+
+      - name: step8, Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.V8_VERSION }}
+          release_name: Release ${{ env.V8_VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release.zip
+          asset_name: v8-${{matrix.os}}-${{env.V8_VERSION}}.zip
+          asset_content_type: application/zip
