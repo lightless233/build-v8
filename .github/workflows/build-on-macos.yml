@@ -36,7 +36,7 @@ jobs:
 
       - name: step5, debug
         run: |
-          pwd && ls -alh && ls -alh ./v8/build && ls -alh ./v8/out && ls -alh ./v8/out.gn
+          pwd && ls -alh ./v8/out.gn/x64.release.sample/obj/
 
       - name: step6, find file
         run: |
@@ -64,7 +64,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release.zip
           asset_name: v8-${{matrix.os}}-${{env.V8_VERSION}}.zip
           asset_content_type: application/zip
