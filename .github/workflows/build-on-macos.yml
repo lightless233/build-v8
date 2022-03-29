@@ -1,6 +1,6 @@
 name: Build V8 on macos
 
-on: pull_request
+on: push
 
 env:
   V8_VERSION: 9.9.115.9
