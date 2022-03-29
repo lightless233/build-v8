@@ -17,3 +17,32 @@ jobs:
     steps:
       - name: step1, checkout repo
         uses: actions/checkout@v2
+
+      - name: step2, setup python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{matrix.python-version}}
+
+      - name: step3, install deps
+        run: |
+          pip install --upgrade pip setuptools wheel
+          python -V
+          python3 -V
+
+      - name: step4, build V8
+        id: build_v8
+        run: |
+          python3 build_v8.py
+
+      - name: step5, debug
+        run: |
+          pwd && ls -alh ./v8/out.gn/x64.release.sample/obj/
+
+      - name: step6, find file
+        run: |
+          find ./ -iname "v8.h"
+          find ./ -iname "*v8_monolith*"
+      
+      -name: step7, build zip
+        run: |
+          zip -9 -r -j release.zip ./v8/include/ ./v8/out.gn/x64.release.sample/obj/libv8_monolith.a ./v8/out.gn/x64.release.sample/icudtl.dat
