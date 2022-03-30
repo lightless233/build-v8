@@ -45,7 +45,7 @@ jobs:
 
       - name: step7, build zip
         run: |
-          zip -9 -r -j release.zip ./v8/include/ ./v8/out.gn/x64.release.sample/obj/libv8_monolith.a ./v8/out.gn/x64.release.sample/icudtl.dat
+          zip -9 -r release.zip ./v8/include/ ./v8/out.gn/x64.release.sample/obj/libv8_monolith.a ./v8/out.gn/x64.release.sample/icudtl.dat
 
       - name: step8, Create Release
         id: create_release
